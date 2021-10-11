@@ -7,6 +7,12 @@
 //
 //============================================================
 #pragma once
+
+
+//============================================================
+//　インクルード
+//============================================================
+#include "doublyLinkedList.h"
 #include "constIterator.h"
 
 
@@ -18,4 +24,8 @@ class Iterator : ConstIterator
 public:
 	
 	// イテレータの指す要素を取得する
+	//DoublyLinkedList::Node* GetIteratorNode(void)
+	//{
+	//	return thisPtr;
+	//}
 };
