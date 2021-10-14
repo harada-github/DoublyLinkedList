@@ -181,7 +181,7 @@ public:
 	//【 先頭コンストイテレータ取得 】
 	//　return：先頭コンストイテレータ
 	//------------------------------------------------------------
-	ConstIterator GetTopConstIterator();
+	const ConstIterator GetTopConstIterator();
 
 	//------------------------------------------------------------
 	//【 末尾イテレータ取得 】
@@ -193,6 +193,6 @@ public:
 	//【 末尾コンストイテレータ取得 】
 	//　return：末尾コンストイテレータ
 	//------------------------------------------------------------
-	ConstIterator GetEndConstIterator();
+	const ConstIterator GetEndConstIterator();
 	//============================================================
 };

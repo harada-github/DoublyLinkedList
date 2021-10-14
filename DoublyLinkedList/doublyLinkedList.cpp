@@ -271,7 +271,7 @@ DoublyLinkedList::Iterator DoublyLinkedList::GetTopIterator()
 //　【 先頭コンストイテレータ取得 】
 //　return：先頭コンストイテレータ
 //------------------------------------------------------------
-DoublyLinkedList::ConstIterator DoublyLinkedList::GetTopConstIterator()
+const DoublyLinkedList::ConstIterator DoublyLinkedList::GetTopConstIterator()
 {
 	DoublyLinkedList::ConstIterator temp(thisPtr->nextPtr);
 
@@ -309,7 +309,7 @@ DoublyLinkedList::Iterator DoublyLinkedList::GetEndIterator()
 //　【 末尾コンストイテレータ取得 】
 //　return：末尾コンストイテレータ
 //------------------------------------------------------------
-DoublyLinkedList::ConstIterator DoublyLinkedList::GetEndConstIterator()
+const DoublyLinkedList::ConstIterator DoublyLinkedList::GetEndConstIterator()
 {
 	DoublyLinkedList::ConstIterator temp(thisPtr->prevPtr);
 
