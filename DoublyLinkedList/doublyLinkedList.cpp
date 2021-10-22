@@ -3,10 +3,11 @@
 //  title  : 双方向リストクラス [doublyLinkedList.cpp]
 //  Author : 原田 陽央
 //   Date  : 2021/10/07
-//  Update : 2021/10/07
+//  Update : 2021/10/22
 //
 //============================================================
 #include "doublyLinkedList.h"
+#include <assert.h>
 
 
 //============================================================
@@ -23,7 +24,7 @@ DoublyLinkedList::ConstIterator::ConstIterator()
 
 //------------------------------------------------------------
 //【 引数付きコンストラクタ 】
-// thisPtr：
+// thisPtr：双方向リストのthisPtrをいれる
 //------------------------------------------------------------
 DoublyLinkedList::ConstIterator::ConstIterator(Node* thisPtr)
 {
@@ -41,15 +42,12 @@ DoublyLinkedList::ConstIterator::~ConstIterator()
 
 
 //------------------------------------------------------------
-//【 リストの末尾向かって一つ進める 】
+//【 リストの末尾向かって一つ進める（前置インクリメント） 】
 //------------------------------------------------------------
 DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator++()
 {
-	// エラーチェック
-	if (itePtr->nextPtr->recordData.score == 0 && itePtr->nextPtr->recordData.userName == "")
-	{
-		//return;
-	}
+	assert(itePtr != nullptr);
+	assert(itePtr->nextPtr != nullptr);
 
 	itePtr = itePtr->nextPtr;
 	return *this;
@@ -57,18 +55,44 @@ DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator++()
 
 
 //------------------------------------------------------------
-//【 リストの先頭に向かって一つ進める 】
+//【 リストの末尾に向かって一つ進める（後置インクリメント） 】
+//------------------------------------------------------------
+DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator++(int)
+{
+	assert(itePtr != nullptr);
+
+	ConstIterator it = *this;
+
+	++(*this);
+
+	return it;
+}
+
+
+//------------------------------------------------------------
+//【 リストの先頭に向かって一つ進める（前置デクリメント） 】
 //------------------------------------------------------------
 DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator--()
 {
-	// エラーチェック
-	if (itePtr->prevPtr->recordData.score == 0 && itePtr->prevPtr->recordData.userName == "")
-	{
-		//return;
-	}
+	assert(itePtr != nullptr);
 
 	itePtr = itePtr->prevPtr;
 	return *this;
+}
+
+
+//------------------------------------------------------------
+//【 リストの先頭に向かって一つ進める（後置デクリメント） 】
+//------------------------------------------------------------
+DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator--(int)
+{
+	assert(itePtr != nullptr);
+
+	ConstIterator it = *this;
+
+	--(*this);
+
+	return it;
 }
 
 
@@ -93,12 +117,26 @@ bool DoublyLinkedList::ConstIterator::operator !=(const ConstIterator &ite) cons
 
 
 //------------------------------------------------------------
-//【 イテレータの指す要素を取得する 】
+//【 コンストイテレータの指す要素を取得する 】
 //------------------------------------------------------------
-const RecordData& DoublyLinkedList::ConstIterator::GetConstData()
+RecordData& DoublyLinkedList::ConstIterator::GetConstData() const
 {
+	assert(itePtr != nullptr);
+
 	return itePtr->recordData;
 }
+
+
+//------------------------------------------------------------
+//【 コンストイテレータの持つNodeを取得する 】
+//------------------------------------------------------------
+DoublyLinkedList::Node* DoublyLinkedList::ConstIterator::GetConstIteratorNode()
+{
+	if (itePtr == nullptr) return nullptr;
+
+	return itePtr;
+}
+
 
 
 
@@ -116,6 +154,7 @@ DoublyLinkedList::Iterator::Iterator()
 
 //------------------------------------------------------------
 //【 引数付きコンストラクタ 】
+// thisPtr：双方向リストのthisPtrをいれる
 //------------------------------------------------------------
 DoublyLinkedList::Iterator::Iterator(Node* thisPtr)
 {
@@ -133,11 +172,82 @@ DoublyLinkedList::Iterator::~Iterator()
 
 
 //------------------------------------------------------------
+//【 リストの末尾向かって一つ進める（前置インクリメント） 】
+//------------------------------------------------------------
+DoublyLinkedList::Iterator& DoublyLinkedList::Iterator::operator++()
+{
+	// エラーチェック
+	assert(itePtr != nullptr);
+
+	itePtr = itePtr->nextPtr;
+	return *this;
+}
+
+
+//------------------------------------------------------------
+//【 リストの末尾に向かって一つ進める（後置インクリメント） 】
+//------------------------------------------------------------
+DoublyLinkedList::Iterator& DoublyLinkedList::Iterator::operator++(int)
+{
+	// エラーチェック
+	assert(itePtr != nullptr);
+
+	Iterator it = *this;
+
+	++(*this);
+
+	return it;
+}
+
+
+//------------------------------------------------------------
+//【 リストの先頭に向かって一つ進める（前置デクリメント） 】
+//------------------------------------------------------------
+DoublyLinkedList::Iterator& DoublyLinkedList::Iterator::operator--()
+{
+	// エラーチェック
+	assert(itePtr != nullptr);
+
+	itePtr = itePtr->prevPtr;
+	return *this;
+}
+
+
+//------------------------------------------------------------
+//【 リストの先頭に向かって一つ進める（後置デクリメント） 】
+//------------------------------------------------------------
+DoublyLinkedList::Iterator& DoublyLinkedList::Iterator::operator--(int)
+{
+	// エラーチェック
+	assert(itePtr != nullptr);
+
+	Iterator it = *this;
+
+	--(*this);
+
+	return it;
+}
+
+
+//------------------------------------------------------------
 //【 イテレータの指す要素を取得する 】
 //------------------------------------------------------------
 RecordData& DoublyLinkedList::Iterator::GetData()
 {
+	assert(itePtr != nullptr);
+
 	return itePtr->recordData;
+}
+
+
+//------------------------------------------------------------
+//【 イテレータの持つNodeを取得する 】
+//------------------------------------------------------------
+DoublyLinkedList::Node* DoublyLinkedList::Iterator::GetIteratorNode()
+{
+	if (itePtr == nullptr) return nullptr;
+
+	return itePtr;
 }
 
 
@@ -150,8 +260,14 @@ RecordData& DoublyLinkedList::Iterator::GetData()
 //------------------------------------------------------------
 DoublyLinkedList::DoublyLinkedList()
 {
+	// ダミーのノードを作成
+	thisPtr = new Node();
+	//thisPtr->recordData.score = 0;
+	//thisPtr->recordData.userName = "";
+
 	// 値を初期化
-	thisPtr = nullptr;
+	thisPtr->prevPtr = nullptr;
+	thisPtr->nextPtr = nullptr;
 }
 
 
@@ -160,7 +276,10 @@ DoublyLinkedList::DoublyLinkedList()
 //------------------------------------------------------------
 DoublyLinkedList::~DoublyLinkedList()
 {
-	;
+	if (thisPtr != nullptr)
+	{
+		delete thisPtr;
+	}
 }
 
 
@@ -168,21 +287,33 @@ DoublyLinkedList::~DoublyLinkedList()
 //　【 データの数の取得 】
 //　return：データの数
 //------------------------------------------------------------
-int DoublyLinkedList::GetDataCount()
+int DoublyLinkedList::GetDataCount() const
 {
 	// データの数をカウントする変数
 	int dataCount = 0;
 
-	// 先頭ポインタを保存
-	Node* temp = thisPtr->nextPtr;
-
-	while (temp != nullptr)
+	// 先頭ポインタがなければ0を返す
+	if (thisPtr->nextPtr == nullptr)
 	{
-		// 末尾に一つ進める
-		temp = temp->nextPtr;
+		return dataCount;
+	}
+	else
+	{
+		// 先頭ポインタを保存
+		Node* temp = thisPtr->nextPtr;
 
-		// データの数をカウント
+		// 先頭分のデータを一つ確保
 		dataCount++;
+
+		// 次にあるデータがthisPtrのデータと一致するまで
+		while (!(temp->nextPtr->recordData.score == 0 && temp->nextPtr->recordData.userName == ""))
+		{
+			// 末尾に一つ進める
+			temp = temp->nextPtr;
+
+			// データの数をカウント
+			dataCount++;
+		}
 	}
 
 	// データの数を返す
@@ -193,36 +324,142 @@ int DoublyLinkedList::GetDataCount()
 //------------------------------------------------------------
 //　【 データの挿入 】
 //　addIterator：追加するイテレータの情報
+//　addScore：追加するデータのスコア情報
 //------------------------------------------------------------
-void DoublyLinkedList::Insert(Iterator addIterator)
+bool DoublyLinkedList::Insert(ConstIterator addConstIterator, int addScore, char* addUserName)
 {
+	// データ数を保持
+	int dataCount = GetDataCount();
+
+	// 挿入用の変数
+	Node* temp = addConstIterator.GetConstIteratorNode();
+
 	// 追加するデータを作成
-	Node* temp = new Node();
-	temp->recordData.score = addIterator.GetData().score;
-	temp->recordData.userName = addIterator.GetData().userName;
+	Node* add = new Node();
+	add->recordData.score = addScore;
+	add->recordData.userName = addUserName;
 
-	// 末尾のポインタを保存
-	Node* endPtr = thisPtr->prevPtr;
-
-	if (endPtr == nullptr)
+	if (dataCount == 0)
 	{
-		// 末尾にデータがない場合はtempを末尾データとする
-		endPtr = temp;
+		// データがない場合は先頭と末尾に作成したデータを設定
 
-		// tempの先をthisPtrにする
-		temp->nextPtr = thisPtr;
+		// thisPtrの前後を作成したデータに設定する
+		thisPtr->nextPtr = add;
+		thisPtr->prevPtr = add;
 
-		// thisPtrの前後の接続先をどちらもtempにする
-		thisPtr->nextPtr = temp;
-		thisPtr->prevPtr = temp;
+		// 作成したデータとthisPtrをつなげる
+		add->nextPtr = thisPtr;
+		add->prevPtr = thisPtr;
+	}
+	else if (temp == thisPtr->nextPtr)
+	{
+		// 作成したデータを先頭に設定
+		thisPtr->nextPtr = add;
+		add->prevPtr = thisPtr;
+
+		// 先頭だったデータとつなげる
+		add->nextPtr = temp;
+		temp->prevPtr = add;
+	}
+	else if (temp == thisPtr)
+	{
+		// 末尾データのノードを取得
+		temp = thisPtr->prevPtr;
+
+		temp->nextPtr = add;
+		add->prevPtr = temp;
+
+		thisPtr->prevPtr = add;
+		add->nextPtr = thisPtr;
+	}
+	else if (temp == nullptr)
+	{
+		// 不正なイテレータの場合
+		return false;
 	}
 	else
 	{
-		endPtr->nextPtr = temp;
-		temp->prevPtr = endPtr;
-		temp->nextPtr = thisPtr;
-		thisPtr->prevPtr = temp;
+		// 作成したデータの前後をつなげる
+		add->nextPtr = temp;
+		add->prevPtr = temp->prevPtr;
+
+		// 作成したデータの前後のデータからつなげる
+		temp->prevPtr = add;
+		add->prevPtr->nextPtr = add;
 	}
+
+	return true;
+}
+
+
+//------------------------------------------------------------
+//　【 データの挿入 】
+//　addIterator：追加するイテレータの情報
+//　addScore：追加するデータのスコア情報
+//------------------------------------------------------------
+bool DoublyLinkedList::Insert(Iterator addIterator, int addScore, char* addUserName)
+{
+	// データ数を保持
+	int dataCount = GetDataCount();
+
+	// 挿入用の変数
+	Node* temp = addIterator.GetIteratorNode();
+
+	// 追加するデータを作成
+	Node* add = new Node();
+	add->recordData.score = addScore;
+	add->recordData.userName = addUserName;
+	
+	if (dataCount == 0)
+	{
+		// データがない場合は先頭と末尾に作成したデータを設定
+
+		// thisPtrの前後を作成したデータに設定する
+		thisPtr->nextPtr = add;
+		thisPtr->prevPtr = add;
+
+		// 作成したデータとthisPtrをつなげる
+		add->nextPtr = thisPtr;
+		add->prevPtr = thisPtr;
+	}
+	else if (temp == thisPtr->nextPtr)
+	{
+		// 作成したデータを先頭に設定
+		thisPtr->nextPtr = add;
+		add->prevPtr = thisPtr;
+
+		// 先頭だったデータとつなげる
+		add->nextPtr = temp;
+		temp->prevPtr = add;
+	}
+	else if (temp == thisPtr)
+	{
+		// 末尾データのノードを取得
+		temp = thisPtr->prevPtr;
+
+		temp->nextPtr = add;
+		add->prevPtr = temp;
+
+		thisPtr->prevPtr = add;
+		add->nextPtr = thisPtr;
+	}
+	else if (temp == nullptr)
+	{
+		// 不正なイテレータの場合
+		return false;
+	}
+	else
+	{
+		// 作成したデータの前後をつなげる
+		add->nextPtr = temp;
+		add->prevPtr = temp->prevPtr;
+
+		// 作成したデータの前後のデータからつなげる
+		temp->prevPtr = add;
+		add->prevPtr->nextPtr = add;
+	}
+
+	return true;
 }
 
 
@@ -230,21 +467,109 @@ void DoublyLinkedList::Insert(Iterator addIterator)
 //　【 データの削除 】
 //　removeIterator：削除するイテレータの情報
 //------------------------------------------------------------
-void DoublyLinkedList::Remove(Iterator removeIterator)
+bool DoublyLinkedList::Remove(ConstIterator removeConstIterator)
 {
-	// 先頭のポインタを保存
-	Node* temp = thisPtr->nextPtr;
+	// データがなければFALSEを返す
+	if (GetDataCount() == 0) return false;
 
-	if (temp == nullptr)
+	// データが一つの場合
+	if (GetDataCount() == 1)
 	{
-		// データがない場合はreturn
-		return;
-	}
-	
-	while (temp != nullptr)
-	{
+		delete thisPtr->nextPtr;
 
+		thisPtr->nextPtr = nullptr;
+		thisPtr->prevPtr = nullptr;
+
+		return true;
 	}
+
+	// データが二つ以上の場合
+	// イテレータのノードを取得
+	Node* temp = removeConstIterator.GetConstIteratorNode();
+
+	if (temp == thisPtr->nextPtr)
+	{
+		// 先頭イテレータの場合
+		thisPtr->nextPtr = temp->nextPtr;
+		temp->nextPtr->prevPtr = thisPtr;
+
+		delete temp;
+	}
+	else if (temp == thisPtr)
+	{
+		// 末尾イテレータの場合はfalseを返す
+		return false;
+	}
+	else if (temp == nullptr)
+	{
+		// 不正なイテレータの場合はfalseを返す
+		return false;
+	}
+	else
+	{
+		// それ以外の場合
+		temp->prevPtr->nextPtr = temp->nextPtr;
+		temp->nextPtr->prevPtr = temp->prevPtr;
+
+		delete temp;
+	}
+
+	return true;
+}
+
+
+//------------------------------------------------------------
+//　【 データの削除 】
+//　removeIterator：削除するイテレータの情報
+//------------------------------------------------------------
+bool DoublyLinkedList::Remove(Iterator removeIterator)
+{
+	// データがなければFALSEを返す
+	if (GetDataCount() == 0) return false;
+
+	// データが一つの場合
+	if (GetDataCount() == 1)
+	{
+		delete thisPtr->nextPtr;
+
+		thisPtr->nextPtr = nullptr;
+		thisPtr->prevPtr = nullptr;
+
+		return true;
+	}
+
+	// データが二つ以上の場合
+	// イテレータのノードを取得
+	Node* temp = removeIterator.GetIteratorNode();
+
+	if (temp == thisPtr->nextPtr)
+	{
+		// 先頭イテレータの場合
+		thisPtr->nextPtr = temp->nextPtr;
+		temp->nextPtr->prevPtr = thisPtr;
+
+		delete temp;
+	}
+	else if (temp == thisPtr)
+	{
+		// 末尾イテレータの場合はfalseを返す
+		return false;
+	}
+	else if (temp == nullptr)
+	{
+		// 不正なイテレータの場合はfalseを返す
+		return false;
+	}
+	else
+	{
+		// それ以外の場合
+		temp->prevPtr->nextPtr = temp->nextPtr;
+		temp->nextPtr->prevPtr = temp->prevPtr;
+
+		delete temp;
+	}
+
+	return true;
 }
 
 
@@ -254,16 +579,21 @@ void DoublyLinkedList::Remove(Iterator removeIterator)
 //------------------------------------------------------------
 DoublyLinkedList::Iterator DoublyLinkedList::GetTopIterator()
 {
-	DoublyLinkedList::Iterator temp(thisPtr->nextPtr);
-
 	// エラーチェック
-	if (temp == NULL)
+	if (GetDataCount() == 0)
 	{
-		return NULL;
-	}
+		DoublyLinkedList::Iterator temp(thisPtr);
 
-	// 先頭イテレータを返す
-	return temp;
+		// データがなければダミーノードを指すイテレータを返す
+		return temp;
+	}
+	else
+	{
+		DoublyLinkedList::Iterator temp(thisPtr->nextPtr);
+
+		// 先頭イテレータを返す
+		return temp;
+	}
 }
 
 
@@ -271,18 +601,23 @@ DoublyLinkedList::Iterator DoublyLinkedList::GetTopIterator()
 //　【 先頭コンストイテレータ取得 】
 //　return：先頭コンストイテレータ
 //------------------------------------------------------------
-const DoublyLinkedList::ConstIterator DoublyLinkedList::GetTopConstIterator()
+DoublyLinkedList::ConstIterator DoublyLinkedList::GetTopConstIterator() const
 {
-	DoublyLinkedList::ConstIterator temp(thisPtr->nextPtr);
-
 	// エラーチェック
-	if (temp == NULL)
+	if (GetDataCount() == 0)
 	{
-		return NULL;
-	}
+		DoublyLinkedList::ConstIterator temp(thisPtr);
 
-	// 先頭イテレータを返す
-	return temp;
+		// データがなければダミーノードを指すイテレータを返す
+		return temp;
+	}
+	else
+	{
+		DoublyLinkedList::ConstIterator temp(thisPtr->nextPtr);
+
+		// 先頭イテレータを返す
+		return temp;
+	}
 }
 
 
@@ -292,15 +627,9 @@ const DoublyLinkedList::ConstIterator DoublyLinkedList::GetTopConstIterator()
 //------------------------------------------------------------
 DoublyLinkedList::Iterator DoublyLinkedList::GetEndIterator()
 {
-	DoublyLinkedList::Iterator temp(thisPtr->prevPtr);
+	DoublyLinkedList::Iterator temp(thisPtr);
 
-	// エラーチェック
-	if (temp == NULL)
-	{
-		return NULL;
-	}
-
-	// 先頭イテレータを返す
+	// 末尾イテレータを返す
 	return temp;
 }
 
@@ -309,16 +638,10 @@ DoublyLinkedList::Iterator DoublyLinkedList::GetEndIterator()
 //　【 末尾コンストイテレータ取得 】
 //　return：末尾コンストイテレータ
 //------------------------------------------------------------
-const DoublyLinkedList::ConstIterator DoublyLinkedList::GetEndConstIterator()
+DoublyLinkedList::ConstIterator DoublyLinkedList::GetEndConstIterator() const
 {
-	DoublyLinkedList::ConstIterator temp(thisPtr->prevPtr);
+	DoublyLinkedList::ConstIterator temp(thisPtr);
 
-	// エラーチェック
-	if (temp == NULL)
-	{
-		return NULL;
-	}
-
-	// 先頭イテレータを返す
+	// 末尾イテレータを返す
 	return temp;
 }
