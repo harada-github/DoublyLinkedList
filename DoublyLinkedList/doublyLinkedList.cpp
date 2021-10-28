@@ -18,7 +18,7 @@
 //------------------------------------------------------------
 DoublyLinkedList::ConstIterator::ConstIterator()
 {
-	;
+	itePtr = nullptr;
 }
 
 
@@ -46,8 +46,10 @@ DoublyLinkedList::ConstIterator::~ConstIterator()
 //------------------------------------------------------------
 DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator++()
 {
+	// エラーチェック
 	assert(itePtr != nullptr);
-	assert(itePtr->nextPtr != nullptr);
+	assert(itePtr->nextPtr->recordData.score != 0);
+	assert(itePtr->nextPtr->recordData.userName != "");
 
 	itePtr = itePtr->nextPtr;
 	return *this;
@@ -59,7 +61,10 @@ DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator++()
 //------------------------------------------------------------
 DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator++(int)
 {
+	// エラーチェック
 	assert(itePtr != nullptr);
+	assert(itePtr->nextPtr->recordData.score != 0);
+	assert(itePtr->nextPtr->recordData.userName != "");
 
 	ConstIterator it = *this;
 
@@ -74,7 +79,12 @@ DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator++(int
 //------------------------------------------------------------
 DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator--()
 {
+	// エラーチェック
 	assert(itePtr != nullptr);
+	//assert(itePtr->recordData.score != 0);
+	//assert(itePtr->recordData.userName != "");
+	assert(itePtr->prevPtr->recordData.score != 0);
+	assert(itePtr->prevPtr->recordData.userName != "");
 
 	itePtr = itePtr->prevPtr;
 	return *this;
@@ -86,7 +96,12 @@ DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator--()
 //------------------------------------------------------------
 DoublyLinkedList::ConstIterator& DoublyLinkedList::ConstIterator::operator--(int)
 {
+	// エラーチェック
 	assert(itePtr != nullptr);
+	//assert(itePtr->recordData.score != 0);
+	//assert(itePtr->recordData.userName != "");
+	assert(itePtr->prevPtr->recordData.score != 0);
+	assert(itePtr->prevPtr->recordData.userName != "");
 
 	ConstIterator it = *this;
 
@@ -121,7 +136,10 @@ bool DoublyLinkedList::ConstIterator::operator !=(const ConstIterator &ite) cons
 //------------------------------------------------------------
 RecordData& DoublyLinkedList::ConstIterator::GetConstData() const
 {
+	// エラーチェック
 	assert(itePtr != nullptr);
+	//assert(itePtr->recordData.score != 0);
+	//assert(itePtr->recordData.userName != "");
 
 	return itePtr->recordData;
 }
@@ -148,7 +166,7 @@ DoublyLinkedList::Node* DoublyLinkedList::ConstIterator::GetConstIteratorNode()
 //------------------------------------------------------------
 DoublyLinkedList::Iterator::Iterator()
 {
-	;
+	itePtr = nullptr;
 }
 
 
@@ -178,6 +196,8 @@ DoublyLinkedList::Iterator& DoublyLinkedList::Iterator::operator++()
 {
 	// エラーチェック
 	assert(itePtr != nullptr);
+	assert(itePtr->nextPtr->recordData.score != 0);
+	assert(itePtr->nextPtr->recordData.userName != "");
 
 	itePtr = itePtr->nextPtr;
 	return *this;
@@ -191,6 +211,8 @@ DoublyLinkedList::Iterator& DoublyLinkedList::Iterator::operator++(int)
 {
 	// エラーチェック
 	assert(itePtr != nullptr);
+	assert(itePtr->nextPtr->recordData.score != 0);
+	assert(itePtr->nextPtr->recordData.userName != "");
 
 	Iterator it = *this;
 
@@ -207,6 +229,10 @@ DoublyLinkedList::Iterator& DoublyLinkedList::Iterator::operator--()
 {
 	// エラーチェック
 	assert(itePtr != nullptr);
+	//assert(itePtr->recordData.score != 0);
+	//assert(itePtr->recordData.userName != "");
+	assert(itePtr->prevPtr->recordData.score != 0);
+	assert(itePtr->prevPtr->recordData.userName != "");
 
 	itePtr = itePtr->prevPtr;
 	return *this;
@@ -220,6 +246,10 @@ DoublyLinkedList::Iterator& DoublyLinkedList::Iterator::operator--(int)
 {
 	// エラーチェック
 	assert(itePtr != nullptr);
+	//assert(itePtr->recordData.score != 0);
+	//assert(itePtr->recordData.userName != "");
+	assert(itePtr->prevPtr->recordData.score != 0);
+	assert(itePtr->prevPtr->recordData.userName != "");
 
 	Iterator it = *this;
 
@@ -234,7 +264,10 @@ DoublyLinkedList::Iterator& DoublyLinkedList::Iterator::operator--(int)
 //------------------------------------------------------------
 RecordData& DoublyLinkedList::Iterator::GetData()
 {
+	// エラーチェック
 	assert(itePtr != nullptr);
+	//assert(itePtr->recordData.score != 0);
+	//assert(itePtr->recordData.userName != "");
 
 	return itePtr->recordData;
 }

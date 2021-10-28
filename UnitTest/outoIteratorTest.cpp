@@ -303,10 +303,10 @@ TEST(TestIteratorListTop, GetTopIteratorWhenListIsTwoDataTest)
 
 	// コンストイテレータの確認
 	DoublyLinkedList::ConstIterator constIt = list.GetEndConstIterator();
-	++constIt;
+	--constIt;
 	EXPECT_EQ(1, constIt.GetConstData().score);
 	EXPECT_EQ("a", constIt.GetConstData().userName);
-	++constIt;
+	--constIt;
 	EXPECT_EQ(2, constIt.GetConstData().score);
 	EXPECT_EQ("bb", constIt.GetConstData().userName);
 }
